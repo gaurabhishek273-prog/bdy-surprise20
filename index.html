@@ -117,36 +117,35 @@ Tharo badmosh 😁</h2>
 			href="https://www.instagram.com/the.cipher.stack?igsh=dmdnbGNzbDNpZzlu">@the.cipher.stack</a></p>
 	  </div> -->
 </body>
-    <script>
-        const birthdaySong = document.getElementById('birthdaySong');
-        const songStart = 68;
-        const songEnd = 110;
+  <script>
+    const birthdaySong = document.getElementById("birthdaySong");
 
-        function startBirthdaySong() {
-    if (!birthdaySong || birthdaySong.dataset.started === 'true') return;
+    const songStart = 68;  // 1:08
+    const songEnd = 110;   // 1:50
 
-    birthdaySong.volume = 0.5;
-
-    birthdaySong.currentTime = 68;
-
-    birthdaySong.play().then(() => {
-        birthdaySong.currentTime = 68;
-    }).catch(() => {
-        console.log("Waiting for user interaction...");
+    // Song loop from 1:08 to 1:50
+    birthdaySong.addEventListener("timeupdate", function () {
+        if (birthdaySong.currentTime >= songEnd) {
+            birthdaySong.currentTime = songStart;
+        }
     });
 
-    birthdaySong.dataset.started = 'true';
-}
+    // Start song when user touches/clicks the website
+    async function startBirthdaySong() {
+        try {
+            birthdaySong.volume = 0.5;
+            birthdaySong.currentTime = songStart;
 
-        birthdaySong.addEventListener('timeupdate', function () {
-            if (birthdaySong.currentTime >= songEnd) {
-                birthdaySong.currentTime = songStart;
-            }
-        });
+            await birthdaySong.play();
 
-        document.addEventListener('pointerdown', startBirthdaySong, { once: true });
-        document.addEventListener('keydown', startBirthdaySong, { once: true });
-        document.addEventListener('touchstart', startBirthdaySong, { once: true });
+            console.log("Song started successfully!");
+        } catch (error) {
+            console.log("Waiting for user interaction...");
+        }
+    }
+    document.addEventListener("click", startBirthdaySong);
+    document.addEventListener("touchend", startBirthdaySong);
+</script>
 
         document.addEventListener('mousemove', function(e){
             let body = document.querySelector('body');
